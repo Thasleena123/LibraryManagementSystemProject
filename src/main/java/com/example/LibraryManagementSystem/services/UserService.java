@@ -2,7 +2,7 @@ package com.example.LibraryManagementSystem.services;
 
 import com.example.LibraryManagementSystem.dto.User;
 import com.example.LibraryManagementSystem.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,30 +11,50 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    EncodingServices encodingServices;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    @Autowired
+    public UserService(UserRepository userRepository, EncodingServices encodingServices) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.encodingServices = encodingServices;
     }
-    public  void  userCreation(User user){
-        String   encryptedPassword=passwordEncoder.encode(user.getPassword());
+
+    public void userCreation(User user) {
+        String encryptedPassword = encodingServices.encodePassword(user.getPassword());
         user.setPassword(encryptedPassword);
         userRepository.userCreation(user);
     }
-    public Optional<User> getUserById(int userId){
-        return  userRepository.getUserById(userId);
+
+    public Optional<User> getUserById(int userId) {
+        return userRepository.getUserById(userId);
     }
-    public void updateUser(User user){
-        String   encryptedPassword=passwordEncoder.encode(user.getPassword());
-        user.setPassword(encryptedPassword);
+
+    public void updateUser(User user) {
+        String encryptedPassword = encodingServices.encodePassword(user.getPassword());
+        user.setPassword(user.getPassword());
         userRepository.updateUser(user);
     }
+
     public void deleteUser(int userId) {
         userRepository.deleteUser(userId);
     }
+
     public List<User> getAllUsers() {
         return userRepository.getAllUsers();
+    }
+
+    public boolean authenticateuser(String email, String password) {
+        User user = userRepository.getUserByEmail(email);
+
+        if (user == null) {
+            throw new RuntimeException("Authentication failes:users not found");
+        }
+
+        if (!encodingServices.checkPassword(password, user.getPassword())) {
+            throw new RuntimeException("authentication failed due to incorrect password");
+        }
+
+        return true;
     }
 }
 
