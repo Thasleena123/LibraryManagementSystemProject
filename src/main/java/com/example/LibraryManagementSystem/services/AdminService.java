@@ -30,7 +30,6 @@ public class AdminService {
         this.bookRepository = bookRepository;
         this.jdbcTemplate=jdbcTemplate;
     }
-
     public boolean authenticateAdmin(String email, String password) {
         User user = userRepository.getUserByEmail(email);
 
@@ -45,7 +44,6 @@ public class AdminService {
         return true;
     }
     public Book updateBook(Long id, Book bookDetails) throws IllegalArgumentException {
-        // Check if the book exists using RowMapper (if the book is not found, JdbcTemplate will throw an exception)
         String query = "SELECT * FROM books WHERE book_id = ?";
         Book existingBook = null;
 
@@ -54,15 +52,11 @@ public class AdminService {
         } catch (EmptyResultDataAccessException e) {
             throw new IllegalArgumentException("Book not found.");
         }
-
-        // Update book details
         existingBook.setTitle(bookDetails.getTitle());
         existingBook.setAuthor(bookDetails.getAuthor());
         existingBook.setCategory(bookDetails.getCategory());
         existingBook.setAvailableCopies(bookDetails.getAvailableCopies());
         existingBook.setRare(bookDetails.isRare());
-
-        // Update the book in the database
         String updateQuery = "UPDATE books SET title = ?, author = ?, category = ?, available_copies = ?, is_rare = ? WHERE book_id = ?";
         jdbcTemplate.update(updateQuery, existingBook.getTitle(), existingBook.getAuthor(), existingBook.getCategory(),
                 existingBook.getAvailableCopies(), existingBook.isRare(), existingBook.getBookId());
