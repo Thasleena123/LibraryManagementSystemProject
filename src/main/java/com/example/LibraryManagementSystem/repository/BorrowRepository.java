@@ -14,7 +14,7 @@ public class BorrowRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public int getBorrowedBooksCount(Long userId) {
+    public int getBorrowedBooksCount(int userId) {
         String query = "SELECT COUNT(*) FROM Borrowing WHERE user_id = ? AND status = 'BORROWED'";
         return jdbcTemplate.queryForObject(query, new Object[]{userId}, Integer.class);
     }
@@ -24,7 +24,7 @@ public class BorrowRepository {
         String query = "SELECT available_copies, is_rare FROM Books WHERE book_id = ?";
         return jdbcTemplate.queryForMap(query, bookId);
     }
-    public void insertBorrowRecord(Long userId, Long bookId, Date returnDate) {
+    public void insertBorrowRecord(int userId, Long bookId, Date returnDate) {
         String query = "INSERT INTO Borrowing (user_id, book_id, borrow_date, return_date, fine, status) " +
                 "VALUES (?, ?, CURRENT_DATE, ?, 0.0, 'BORROWED')";
         jdbcTemplate.update(query, userId, bookId, returnDate);

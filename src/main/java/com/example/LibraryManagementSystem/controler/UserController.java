@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @PostMapping("/borrow")
-    public ResponseEntity<String> borrowBook(@RequestParam("user_id") Long userId, @RequestParam("book_id") Long bookId, @RequestParam("max_days") int maxDays) {
+    public ResponseEntity<String> borrowBook(@RequestParam("user_id") int userId, @RequestParam("book_id") Long bookId, @RequestParam("max_days") int maxDays) {
         try {
             borrowService.borrowBook(userId, bookId, maxDays);
             return ResponseEntity.ok("Book borrowed successfully.");

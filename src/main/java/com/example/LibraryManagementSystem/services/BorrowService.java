@@ -20,7 +20,7 @@ public class BorrowService {
     }
 
     //borrow limit
-    public void borrowBook(Long userId, Long bookId, int maxDays) throws Exception {
+    public void borrowBook(int userId, Long bookId, int maxDays) throws Exception {
         int borrowedBooksCount = borrowRepository.getBorrowedBooksCount(userId);
         if (borrowedBooksCount >= 5) {
             throw new Exception("Borrow limit exceeded!");

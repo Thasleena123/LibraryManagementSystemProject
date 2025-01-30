@@ -44,7 +44,7 @@ public class AdminService {
         return true;
     }
     public Book updateBook(Long id, Book bookDetails) throws IllegalArgumentException {
-        String query = "SELECT * FROM books WHERE book_id = ?";
+        String query = "SELECT * FROM Books WHERE book_id = ?";
         Book existingBook = null;
 
         try {
@@ -57,7 +57,7 @@ public class AdminService {
         existingBook.setCategory(bookDetails.getCategory());
         existingBook.setAvailableCopies(bookDetails.getAvailableCopies());
         existingBook.setRare(bookDetails.isRare());
-        String updateQuery = "UPDATE books SET title = ?, author = ?, category = ?, available_copies = ?, is_rare = ? WHERE book_id = ?";
+        String updateQuery = "UPDATE Books SET title = ?, author = ?, category = ?, available_copies = ?, is_rare = ? WHERE book_id = ?";
         jdbcTemplate.update(updateQuery, existingBook.getTitle(), existingBook.getAuthor(), existingBook.getCategory(),
                 existingBook.getAvailableCopies(), existingBook.isRare(), existingBook.getBookId());
 
