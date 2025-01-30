@@ -1,6 +1,7 @@
 package com.example.LibraryManagementSystem.services;
 
 import com.example.LibraryManagementSystem.dto.User;
+import com.example.LibraryManagementSystem.enums.Role;
 import com.example.LibraryManagementSystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,9 +40,7 @@ public class UserService {
         userRepository.deleteUser(userId);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
-    }
+
 
     public boolean authenticateuser(String email, String password) {
         User user = userRepository.getUserByEmail(email);
@@ -56,5 +55,6 @@ public class UserService {
 
         return true;
     }
+
 }
 
