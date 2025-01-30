@@ -14,20 +14,6 @@ public class BorrowRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-//    public Map<String, Object> getMembershipDetails(Long userId) {
-//        String userQuery = "SELECT membership_id FROM Users WHERE user_id = ?";
-//        Long membershipId = jdbcTemplate.queryForObject(userQuery, new Object[]{userId}, Long.class);
-//
-//        if (membershipId == null) {
-//            return null;
-//        }
-//
-//        String membershipQuery = "SELECT borrow_limit, max_borrow_days FROM memberships WHERE membership_id = ?";
-//        return jdbcTemplate.queryForMap(membershipQuery, membershipId);
-//    }
-
-
     public int getBorrowedBooksCount(Long userId) {
         String query = "SELECT COUNT(*) FROM Borrowing WHERE user_id = ? AND status = 'BORROWED'";
         return jdbcTemplate.queryForObject(query, new Object[]{userId}, Integer.class);

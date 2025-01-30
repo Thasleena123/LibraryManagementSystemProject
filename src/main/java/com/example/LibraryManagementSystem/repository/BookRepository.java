@@ -26,15 +26,7 @@ public class BookRepository {
         int rows=jdbcTemplate.update(sql,newAvailableCopies, title);
         return rows == 1;
     }
-    public void update(Book book) {
-        String sql = "UPDATE Books SET title = ?, author = ?, category = ?, available_copies = ?, is_rare = ?, max_borrow_days = ? WHERE book_id = ?";
-        jdbcTemplate.update(sql, book.getTitle(), book.getAuthor(), book.getCategory(),
-                book.getAvailableCopies(), book.isRare(), book.getMaxBorrowDays(), book.getBookId());
-    }
-    public void deleteById(int bookId) {
-        String sql = "DELETE FROM Books WHERE book_id = ?";
-        jdbcTemplate.update(sql, bookId);
-    }
+
     public List<Book> findAll() {
         String sql = "SELECT * FROM Books";
         return jdbcTemplate.query(sql, new BookRowMapper());

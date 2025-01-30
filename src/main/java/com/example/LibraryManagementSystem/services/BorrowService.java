@@ -25,17 +25,17 @@ public class BorrowService {
         if (borrowedBooksCount >= 5) {
             throw new Exception("Borrow limit exceeded!");
         }
-// book is available or not
+
         int availableCopies = borrowRepository.getAvailableCopies(bookId);
         if (availableCopies <= 0) {
             throw new Exception("Book unavailable.");
         }
-//borrow abd return dates
+
         Date borrowDate = new Date(System.currentTimeMillis());
         Date returnDate = new Date(borrowDate.getTime() + (maxDays * 24L * 60L * 60L * 1000L));
 
-        borrowRepository.insertBorrowRecord(userId, bookId, returnDate);//insert into borrow record
-        borrowRepository.updateBookAvailability(bookId, -1);//book availability updated
+        borrowRepository.insertBorrowRecord(userId, bookId, returnDate);
+        borrowRepository.updateBookAvailability(bookId, -1);
     }
 
     public void returnBook(Long borrowId) throws IllegalArgumentException {
@@ -43,13 +43,13 @@ public class BorrowService {
             throw new IllegalArgumentException("Borrow record not found.");
         }
 
-        // fine calculation
+
         Date currentDate = new Date();
         double fine = borrowRepository.calculateFine(borrowId, currentDate);
 
         borrowRepository.updateBorrowRecord(borrowId, fine);
 
-        // Update the book availability
+
         Long bookId = borrowRepository.getBookIdFromBorrowRecord(borrowId);
         borrowRepository.updateBookAvailability(bookId, 1);
     }

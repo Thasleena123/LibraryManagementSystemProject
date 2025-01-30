@@ -44,24 +44,6 @@ public class UserRepository {
 
     }
 
-    public Optional<User> getUserById(int userId) {
-        String sql = "SELECT * FROM Users WHERE user_id = ?";
-        try {
-            User user = jdbcTemplate.queryForObject(sql, userRowMapper, userId);
-            return Optional.ofNullable(user);
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        } catch (Exception e) {
-            System.out.println("Error fetching user by ID: " + e.getMessage());
-            return Optional.empty();
-        }
-    }
-
-    public void updateUser(User user) {
-        String sql = "update Users set email=?,password=?,role=?,first_name=?,last_name=?,membership_type=?;";
-        jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), user.getRole(), user.getFirstName(), user.getLastName(), user.getLastName());
-    }
-
     public List<User> getAllUsers() {
         String sql = "SELECT * FROM Users";
         return jdbcTemplate.query(sql, userRowMapper);
