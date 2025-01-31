@@ -2,6 +2,7 @@ package com.example.LibraryManagementSystem.repository;
 
 import com.example.LibraryManagementSystem.dto.Book;
 import com.example.LibraryManagementSystem.dto.BookRowMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,8 @@ import java.util.List;
 @Repository
 public class BookRepository {
     private  final JdbcTemplate jdbcTemplate;
+
+    @Autowired
     public  BookRepository(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate=jdbcTemplate;
     }

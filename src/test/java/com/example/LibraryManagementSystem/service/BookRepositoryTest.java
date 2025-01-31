@@ -14,13 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.TestPropertySource;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
 import java.util.List;
 
 @JdbcTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestPropertySource("classpath:application-test.properties")
 public class BookRepositoryTest {
 
         @Autowired
@@ -38,7 +40,7 @@ public class BookRepositoryTest {
 
             // Set up the in-memory database for testing
             String createTableSql = "CREATE TABLE Books (" +
-                    "book_id INT AUTO_INCREMENT PRIMARY KEY, " +
+                    "book_id INT PRIMARY KEY, " +
                     "title VARCHAR(255), " +
                     "author VARCHAR(255), " +
                     "category VARCHAR(255), " +
@@ -48,9 +50,9 @@ public class BookRepositoryTest {
             jdbcTemplate.execute(createTableSql);  // Create table before tests
 
             // Insert test data
-            String insertSql = "INSERT INTO Books (title, author, category, available_copies, is_rare, max_borrow_days) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
-            jdbcTemplate.update(insertSql, testBook.getTitle(), testBook.getAuthor(), testBook.getCategory(),
+            String insertSql = "INSERT INTO Books (book_id ,title, author, category, available_copies, is_rare, max_borrow_days) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            jdbcTemplate.update(insertSql, testBook.getBookId(), testBook.getTitle(), testBook.getAuthor(), testBook.getCategory(),
                     testBook.getAvailableCopies(), testBook.isRare(), testBook.getMaxBorrowDays());
         }
 

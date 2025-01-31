@@ -113,7 +113,7 @@ public class BorrowRepositortTest {
 
     @Test
     void testDoesBorrowRecordExist_True() {
-        boolean exists = borrowRepository.doesBorrowRecordExist(1L);\
+        boolean exists = borrowRepository.doesBorrowRecordExist(1L);
 
         assertTrue(exists);
     }
